@@ -4,14 +4,24 @@ using namespace std;
 class StringOperations{
     public:
         StringOperations() {};
-        int GetLength();
+        int GetLength(char *myStringArray);
 };
 
-int StringOperations::GetLength(){
-    cout<<"whatever"<<endl;
-    return 0;
+int StringOperations::GetLength(char *myStringArray){
+    int i;
+    for(i = 0; myStringArray[i] != '\0'; i++){
+        // Hai Domo!
+    }
+    return i;
 }
 
+int main(){
+    char thisString[] = "Hai Domooooo";
+    StringOperations so;
+    int n = so.GetLength(thisString);
+    cout<<n<<endl;
+}
+/*
 StringOperations* createObject(){
     StringOperations *so = new StringOperations();
     return so;
@@ -37,3 +47,4 @@ int main(){
     delete kek;
     return 0;
 };
+*/
