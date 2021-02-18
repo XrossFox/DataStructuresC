@@ -10,7 +10,6 @@ class Node{
 class LinkedList{
     public:
         Node* head;
-        Node* tmp;
         Node* last;
 
         LinkedList(){
@@ -18,24 +17,26 @@ class LinkedList{
             last = nullptr;
         }
 
+        LinkedList(const LinkedList &linked_list){
+            head = nullptr;
+            last = nullptr;
+            Node * current_node = linked_list.head;
+
+            while(current_node){
+                this->push(current_node->data);
+                current_node = current_node->next;
+            }
+            delete current_node;
+        }
+
         ~LinkedList(){
             delete head;
-            delete tmp;
             delete last;
         }
 
         void init_from_array(int* le_array, int size){
-            head = new Node;
-            head->data = le_array[0];
-            head->next = nullptr;
-            last = head;
-
-            for(int i = 1; i < size; i++){
-                tmp = new Node;
-                tmp->data = le_array[i];
-                tmp->next = nullptr;
-                last->next = tmp;
-                last = tmp;
+            for(int i = 0; i < size; i++){
+                this->push(le_array[i]);
             }
         }
         
@@ -340,63 +341,65 @@ class LinkedList{
             last = new_node;
         }
 
-        LinkedList * concat(LinkedList second){
+        LinkedList concat(LinkedList second){
 
-            LinkedList * new_list = new LinkedList;
+            LinkedList new_list;
             Node * current_node = head;
 
             while(current_node){
-                new_list->push(current_node->data);
+                new_list.push(current_node->data);
                 current_node = current_node->next;
             }
 
             current_node = second.head;
 
             while(current_node){
-                new_list->push(current_node->data);
+                new_list.push(current_node->data);
                 current_node = current_node->next;
             }
             delete current_node;
             return new_list;
         }
 
-        LinkedList * merge(LinkedList second){
+        LinkedList merge(LinkedList second){
             Node * current_primary = head;
             Node * current_secondary = second.head;
-            LinkedList * new_list = new LinkedList;
+            LinkedList new_list;
 
             if(current_primary->data < current_secondary->data){
-                cout<<"\nthe first list has head";
-                new_list->push(current_primary->data);
+                new_list.push(current_primary->data);
 
                 current_primary = current_primary->next;
             }
             else{
-                cout<<"\nthe first list has head";
-                new_list->push(current_secondary->data);
+                new_list.push(current_secondary->data);
 
                 current_secondary = current_secondary->next;
             }
 
-            while(current_primary || current_secondary){
+            while(current_primary && current_secondary){
                 if(current_primary->data < current_secondary->data){
-                    new_list->push(current_primary->data);
+                    new_list.push(current_primary->data);
                     current_primary = current_primary->next;
                 }
                 else if(current_secondary->data < current_primary->data){
-                    new_list->push(current_secondary->data);
+                    new_list.push(current_secondary->data);
                     current_secondary = current_secondary->next;
                 }
-                else if(current_primary && !current_secondary){
-                    new_list->push(current_primary->data);
+            }
+
+            if(current_primary){
+                while(current_primary){
+                    new_list.push(current_primary->data);
                     current_primary = current_primary->next;
                 }
-                else if(current_secondary && !current_primary){
-                    new_list->push(current_secondary->data);
+            }
+
+            if(current_secondary){
+                while(current_secondary){
+                    new_list.push(current_secondary->data);
                     current_secondary = current_secondary->next;
                 }
-                else
-                    throw runtime_error("Well, fuck");
             }
 
             delete current_primary, current_secondary;
@@ -416,29 +419,25 @@ int main(){
 
     int A[] = {3, 5, 7};
     int B[] = {4, 6, 8};
-    LinkedList ll, ll2;
+    LinkedList ll, ll2, ll3, ll4;
     ll.init_from_array(A, 3);
     ll.display();
     cout<<"\n";
     ll2.init_from_array(B, 3);
     ll2.display();
-    cout<<"\nconcatenated:\n";
-    LinkedList* new_list;
-    new_list = ll.concat(ll2);
-    cout<<new_list;
 
-    /*
+    cout<<"\nconcatenated:\n";
+
+    LinkedList new_list = ll.concat(ll2);
+    new_list.display();
+
     cout<<"\nmerge lists:\n";
-    ll3.init_from_array(C, 3);
-    ll4.init_from_array(D, 3);
-    LinkedList * new_list;
-    try{
-    new_list = ll3.merge(ll4);
-    }catch(exception e){
-        cerr<<e.what();
-    }
-    new_list->recursive_display(new_list->head);
-    */ 
+
+    ll3.init_from_array(A, 3);
+    ll4.init_from_array(B, 3);
+    LinkedList another_new_list = ll3.merge(ll4);
+    another_new_list.display();
+
     return 0;
 }
 
