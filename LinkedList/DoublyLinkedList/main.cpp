@@ -171,18 +171,85 @@ class DoublyLinkedList{
             }
 
         }
+
+        /**
+         * Deletes the node at the given index
+         * @param index: The index of the node to be deleted.
+         * @return The value of the deleted node.
+         */
+        T deleteAt(int index){
+            
+            Node<T> * currentNode = head;
+            T value;
+
+            if(index < 0 || index > lenght() || lenght() == 0){
+                throw std::runtime_error("Index out of bounds.");
+            }
+
+            if(index == 0){
+
+                value = currentNode->data;
+                head = currentNode->next;
+                if(head){
+                    head->previous = nullptr;
+                }
+                else{
+                    tail = nullptr;
+                }
+
+                delete currentNode;
+
+            }
+            else{
+
+                for(int i = 0; i < index; i++){
+                    currentNode = currentNode->next;
+                }
+
+                currentNode->previous->next = currentNode->next;
+                if(currentNode->next){
+                    currentNode->next->previous = currentNode->previous;
+                }
+                else{
+                    tail = currentNode->previous;
+                }
+                value = currentNode->data;
+                delete currentNode;
+            }
+
+            return value;
+        }
 };
 
 int main(){
 
     DoublyLinkedList<std::string> dbll;
-    dbll.insertAt(0, "Aloha!");
-    dbll.display();
-    dbll.insertAt(0, "Konichiwa!");
-    dbll.display();
-    dbll.insertAt(2, "Ohaiyo!");
-    dbll.display();
-    dbll.insertAt(2, "Holis!");
-    dbll.display();
+    try{
+        dbll.deleteAt(0);
+    }catch(const std::exception &e){
+        std::cerr<<"holy cow, mate, you fell for it, list is empty: "<<e.what()<<"\n";
+    }
+    try{
+        dbll.deleteAt(-1);
+    }catch(const std::exception &e){
+        std::cerr<<"under zero: "<<e.what()<<"\n";
+    }
+    try{
+        dbll.deleteAt(15);
+    }catch(const std::exception &e){
+        std::cerr<<"beyond the size of the list: "<<e.what()<<"\n";
+    }
 
+    dbll.add("La wea come galletas!");
+    dbll.display();
+    dbll.deleteAt(0);
+    dbll.add("la wea");
+    dbll.add("cuatica");
+    dbll.add("cosmica");
+    dbll.display();
+    dbll.deleteAt(1);
+    dbll.display();
+    dbll.deleteAt(1);
+    dbll.add("Ajua!");
+    dbll.display();
 }
