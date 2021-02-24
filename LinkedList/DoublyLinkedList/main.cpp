@@ -219,37 +219,43 @@ class DoublyLinkedList{
 
             return value;
         }
+
+        /**
+         * Reverses a list
+         */
+        void reverse(){
+
+            Node<T> * currentNode = head;
+            Node<T> * temporalTail = head;
+            Node<T> * temporalNode = nullptr;
+
+            while(currentNode){
+
+                temporalNode = currentNode->next;
+                currentNode->next = currentNode->previous;
+                currentNode->previous = temporalNode;
+                currentNode =  currentNode->previous;
+                if(currentNode != nullptr && currentNode->next == nullptr){
+                    head = currentNode;
+                }
+
+            }
+
+            tail = temporalTail;
+        }
 };
 
 int main(){
 
     DoublyLinkedList<std::string> dbll;
-    try{
-        dbll.deleteAt(0);
-    }catch(const std::exception &e){
-        std::cerr<<"holy cow, mate, you fell for it, list is empty: "<<e.what()<<"\n";
-    }
-    try{
-        dbll.deleteAt(-1);
-    }catch(const std::exception &e){
-        std::cerr<<"under zero: "<<e.what()<<"\n";
-    }
-    try{
-        dbll.deleteAt(15);
-    }catch(const std::exception &e){
-        std::cerr<<"beyond the size of the list: "<<e.what()<<"\n";
-    }
 
     dbll.add("La wea come galletas!");
-    dbll.display();
-    dbll.deleteAt(0);
     dbll.add("la wea");
     dbll.add("cuatica");
     dbll.add("cosmica");
-    dbll.display();
-    dbll.deleteAt(1);
-    dbll.display();
-    dbll.deleteAt(1);
     dbll.add("Ajua!");
+    dbll.display();
+
+    dbll.reverse();
     dbll.display();
 }
