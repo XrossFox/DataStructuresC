@@ -118,20 +118,71 @@ class DoublyLinkedList{
 
             return size;
         }
+
+        /**
+         * Inserts a new element into the list at the given index
+         * @param index: the position to insert at.
+         * @param value: the actual value.
+         */
+        void insertAt(int index, T value){
+            
+            Node<T> * currentNode = head;
+            Node<T> * newNode = nullptr;
+
+            if(index < 0 || index > lenght()){
+                throw std::runtime_error("Index out of bounds.");
+            }
+            
+            if(!currentNode){
+
+                newNode = new Node<T>;
+                newNode->data = value;
+                newNode->previous = nullptr;
+                newNode->next = nullptr;
+                head = newNode;
+                tail = head;
+
+            }
+            else if(index == 0){
+
+                newNode = new Node<T>;
+                newNode->data = value;
+                newNode->previous = nullptr;
+                newNode->next = currentNode;
+                currentNode->previous = newNode;
+                head = newNode;
+
+            }
+            else{
+
+                for(int i = 0; i < index-1; i++){
+                    currentNode = currentNode->next;
+                }
+
+                newNode = new Node<T>;
+                newNode->data = value;
+                newNode->previous = currentNode;
+                newNode->next = currentNode->next;
+                if(currentNode->next){
+                    currentNode->next->previous = newNode;
+                }
+                currentNode->next = newNode;
+
+            }
+
+        }
 };
 
 int main(){
 
     DoublyLinkedList<std::string> dbll;
-    dbll.add("Aloha!");
-    dbll.add("Konichiwa!");
-    dbll.add("Ohaiyo!");
-    dbll.add("Holis!");
+    dbll.insertAt(0, "Aloha!");
     dbll.display();
-    std::cout<<"The list has: "<<dbll.lenght()<<" elements.\n";
+    dbll.insertAt(0, "Konichiwa!");
+    dbll.display();
+    dbll.insertAt(2, "Ohaiyo!");
+    dbll.display();
+    dbll.insertAt(2, "Holis!");
+    dbll.display();
 
-    double A[] = {1.0, 1.1, 1.2, 1.3};
-    DoublyLinkedList<double> dbll2;
-    dbll2.addFromRawArray(A, 4);
-    dbll2.display();
 }
