@@ -1,5 +1,9 @@
 .vscode/
 
+environment
+*.pyc
+__pycache__/*
+
 # Prerequisites
 *.d
 
