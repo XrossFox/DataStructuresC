@@ -110,23 +110,20 @@ class LinkedList:
         else:
 
             current_node = self.head
-            i = 0
-            while i < index - 1:
+            for i in range(index-1):
                 current_node = current_node.next
-            
-            new_node.next = current_node.next
+            print("current data +"+current_node.data)
             new_node.previous = current_node
-            if new_node.next:
-                new_node.next.previous = new_node
-            else:
+            new_node.next = current_node.next
+            current_node.next = new_node
+            if(new_node.next is None):
                 self.tail = new_node
-
             self.size = 1
 
     def __str__(self):
         a_string = ""
         current_node = self.head
-        while current_node.next is not None:
+        while current_node is not None:
 
             a_string += str(current_node.data) + " <-> "
             current_node = current_node.next

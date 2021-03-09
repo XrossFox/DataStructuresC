@@ -102,7 +102,9 @@ class LinkedListTests(TestCase):
         When trying to insert an element at the tail position and the
         list is not empty.
         1. The list must be size > 1.
-        2. The element should be inserted at position size - 1.
+        2. The element should be inserted at position 'size'
+        That means, the new element should be inserted after the old tail, and
+        become the new one.
         3. The new node must be new tail.
         4. the old tail next node should be new node.
         5. the new node previous node must be old tail.
@@ -112,11 +114,11 @@ class LinkedListTests(TestCase):
         other_value = "Gutentag"
         ll.append("konnichiwa")
         ll.append(a_value)
-        ll.insert_at(ll.size-1, other_value)
+        ll.insert_at(ll.size, other_value)
         self.assertTrue(ll.size > 1)
         self.assertEqual(ll.tail.data, other_value)
         self.assertEqual(ll.tail.previous.next.data, other_value)
-        self.assertEqual(ll.tail.previous.data, a_value)
+        self.assertEqual(ll.tail.previous.data, a_value)      
 
     def test_list_insert_not_head_nor_tail(self):
         '''
@@ -130,7 +132,6 @@ class LinkedListTests(TestCase):
         ll.append("Kizuna AI Desu!")
         ll.append("fokiu!")
         ll.insert_at(1, a_value)
-        print(ll)
         self.assertEqual(ll.head.next.data, a_value)
 
 
