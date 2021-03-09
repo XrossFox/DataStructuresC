@@ -11,7 +11,7 @@ class LinkedList:
     @property
     def head(self) -> Node:
         '''
-        returns head node
+        returns head node.
         '''
         return self._head
 
@@ -29,7 +29,7 @@ class LinkedList:
     @property
     def size(self) -> int:
         '''
-        returns the size of the list
+        returns the size of the list.
         '''
         return self._size
 
@@ -46,7 +46,7 @@ class LinkedList:
     @property
     def tail(self) -> Node:
         '''
-        returns tail node
+        returns tail node.
         '''
         return self._tail
 
@@ -76,8 +76,59 @@ class LinkedList:
 
             self.head = new_node
             self.tail = new_node
+            self.size = 1
             return
 
+        self.size = 1
         self.tail.next = new_node
         new_node.previous = self.tail
         self.tail = new_node
+
+    def insert_at(self, index, value):
+        '''
+        Inserts a value at the given position.
+        index -- the position as an int.
+        value -- an object.
+        '''
+        new_node = Node()
+        new_node.data = value
+
+        if self.head is None:
+
+            self.head = new_node
+            self.tail = new_node
+            self.size = 1
+            return
+
+        if index == 0:
+
+            new_node.next = self.head
+            self.head.previous = new_node
+            self.head = new_node
+            self.size = 1
+
+        else:
+
+            current_node = self.head
+            i = 0
+            while i < index - 1:
+                current_node = current_node.next
+            
+            new_node.next = current_node.next
+            new_node.previous = current_node
+            if new_node.next:
+                new_node.next.previous = new_node
+            else:
+                self.tail = new_node
+
+            self.size = 1
+
+    def __str__(self):
+        a_string = ""
+        current_node = self.head
+        while current_node.next is not None:
+
+            a_string += str(current_node.data) + " <-> "
+            current_node = current_node.next
+
+        return a_string
