@@ -90,6 +90,11 @@ class LinkedList:
         index -- the position as an int.
         value -- an object.
         '''
+        if not isinstance(index, int):
+            raise TypeError("index is not of type int")
+        if index < 0 or index > self.size:
+            raise LookupError("index out of bounds")
+
         new_node = Node()
         new_node.data = value
 
@@ -112,13 +117,84 @@ class LinkedList:
             current_node = self.head
             for i in range(index-1):
                 current_node = current_node.next
-            print("current data +"+current_node.data)
             new_node.previous = current_node
             new_node.next = current_node.next
             current_node.next = new_node
             if(new_node.next is None):
                 self.tail = new_node
             self.size = 1
+
+    def get_at(self, index):
+        '''
+        Returns the data attribute of the node at the given
+        index.
+        index -- the index of the node. Must be < list size and > 0.
+        return -- the data attribure of the node.
+        '''
+        if not isinstance(index, int):
+            raise TypeError("index is not of type int")
+        if index < 0 or index >= self.size:
+            raise LookupError('index out of bounds')
+
+        current_node = self.head
+        i = 0
+        while i < index:
+            current_node = current_node.next
+            i += 1
+
+        return current_node.data
+
+    def is_present(self, value):
+        '''
+        Return wether a value is present in the list.
+        value -- the value to look for.
+        return -- True | False.
+        '''
+        current_node = self.head
+        while current_node and not current_node.data == value:
+            current_node = current_node.next
+
+        if current_node and current_node.data == value:
+            return True
+        else:
+            return False
+
+    def delete_at(self, index):
+        '''
+        Deletes a value at a given index, and returns
+        the data attribute of the deleted node.
+        index -- the index position of the node to remove.
+        return -- data attribute of the deleted node
+        '''
+        if index < 0 or index >= self.size:
+            raise LookupError("index out of bounds")
+
+        current_node = self.head
+        current_data = None
+        i = 0
+        while i < index:
+            current_node = current_node.next
+            i += 1
+        current_node.previous.next = current_node.next
+        current_node.next.previous = current_node.previous
+        current_data = current_node.data
+        del current_node
+        return current_data
+
+    def get_index_of(self, value):
+        '''
+        Return the index of a given value.
+        value -- the value to look for.
+        returns -- the index of the value as an int
+        '''
+        current_node = self.head
+        i = 0
+        while current_node:
+            if current_node.data == value:
+                return i
+            current_node = current_node.next
+            i += 1
+        raise LookupError("value is not present")
 
     def __str__(self):
         a_string = ""
